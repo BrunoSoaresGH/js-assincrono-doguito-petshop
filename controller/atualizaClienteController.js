@@ -7,17 +7,27 @@ async () => {
     const inputNome = document.querySelector('#nome');
     const inputEmail = document.querySelector('#email');
 
-    const dados = await clienteService.detalhaCliente(id);
-    inputNome.value = dados.nome;
-    inputEmail.value = dados.email;
+    try {
+        const dados = await clienteService.detalhaCliente(id);
+        inputNome.value = dados.nome;
+        inputEmail.value = dados.email;
+    } catch (e) {
+        console.log(e);
+        window.location.href = '../telas/erro.html';
+    }
 
 
     const form = document.querySelector('[data-form]');
 
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
-
-        await clienteService.atualizaCliente(id, inputNome.value, inputEmail.value);
-        window.location.href = '../telas/edicao_concluida.html';
+        try {
+            await clienteService.atualizaCliente(id, inputNome.value, inputEmail.value);
+            window.location.href = '../telas/edicao_concluida.html';
+        }
+        catch (e) {
+            console.log(e);
+            window.location.href = '../telas/erro.html';
+        }
     });
 };
