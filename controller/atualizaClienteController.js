@@ -1,21 +1,23 @@
 import { clienteService } from '../service/cliente-service.js';
 
-const getURL = new URL(window.location);
-const id = getURL.searchParams.get('id');
+async () => {
+    const getURL = new URL(window.location);
+    const id = getURL.searchParams.get('id');
 
-const inputNome = document.querySelector("#nome");
-const inputEmail = document.querySelector("#email");
+    const inputNome = document.querySelector('#nome');
+    const inputEmail = document.querySelector('#email');
 
-clienteService.detalhaCliente(id).then(response => {
-    inputNome.value = response.nome;
-    inputEmail.value = response.email;
-});
+    const dados = await clienteService.detalhaCliente(id);
+    inputNome.value = dados.nome;
+    inputEmail.value = dados.email;
 
-const form = document.querySelector("[data-form]");
 
-form.addEventListener("submit", (event) => {
-    event.preventDefault();
+    const form = document.querySelector('[data-form]');
 
-    clienteService.atualizaCliente(id, inputNome.value, inputEmail.value)
-    .then(() => {window.location.href = "../telas/edicao_concluida.html"})
-});
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        await clienteService.atualizaCliente(id, inputNome.value, inputEmail.value);
+        window.location.href = '../telas/edicao_concluida.html';
+    });
+};
